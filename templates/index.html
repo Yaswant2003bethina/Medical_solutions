@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+    <title>Medicine Predictor</title>
+</head>
+<body>
+    <nav id="navbar">
+        <video autoplay loop muted id="bg-video">
+            <source src="{{ url_for('static', filename='vn.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <h1>MediWorld Solutions</h1>
+    </nav>
+    <video autoplay loop muted id="vb-video">
+        <source src="{{ url_for('static', filename='vb.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <img src="{{ url_for('static', filename='p1.jpg') }}" alt="Medicine Image">
+    <form action="/predict_medicine_name" method="post">
+        <h1>Medicine Predictor</h1>
+        <label for="useSearch">Search for uses:</label><br>
+        <input type="text" id="useSearch" name="useSearch" onkeyup="filterUses()" placeholder="Search for uses..."><br><br>
+        <label for="uses">Select uses:</label><br>
+        <select id="uses" name="uses" size="2">
+            {% for use in uses %}
+                <option>{{ use }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Predict Medicine Name">       
+    </form>
+
+    <form action="/predict_uses" method="post">
+        <label for="medicineSearch">Search for medicine:</label><br>
+        <input type="text" id="medicineSearch" name="medicineSearch" onkeyup="filterMedicines()" placeholder="Search for medicine..."><br><br>
+        <label for="medicine_name">Select medicine name:</label><br>
+        <select id="medicine_name" name="medicine_name" size="2">
+            {% for medicine in medicines %}
+                <option>{{ medicine }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Predict Uses">
+    </form>
+
+    <script>
+        // Function to filter uses based on input text
+        function filterUses() {
+            var input, filter, select, options, i;
+            input = document.getElementById("useSearch");
+            filter = input.value.toUpperCase();
+            select = document.getElementById("uses");
+            options = select.getElementsByTagName("option");
+            for (i = 0; i < options.length; i++) {
+                if (options[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    options[i].style.display = "";
+                } else {
+                    options[i].style.display = "none";
+                }
+            }
+            // Select the first visible option
+            selectFirstVisibleOption("uses");
+        }
+        
+        // Function to filter medicines based on input text
+        function filterMedicines() {
+            var input, filter, select, options, i;
+            input = document.getElementById("medicineSearch");
+            filter = input.value.toUpperCase();
+            select = document.getElementById("medicine_name");
+            options = select.getElementsByTagName("option");
+            for (i = 0; i < options.length; i++) {
+                if (options[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    options[i].style.display = "";
+                } else {
+                    options[i].style.display = "none";
+                }
+            }
+            // Select the first visible option
+            selectFirstVisibleOption("medicine_name");
+        }
+        
+        // Listen for Enter key press event for useSearch
+        document.getElementById("useSearch").addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                filterUses(); // Call filtering function
+            }
+        });
+        
+        // Listen for Enter key press event for medicineSearch
+        document.getElementById("medicineSearch").addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                filterMedicines(); // Call filtering function
+            }
+        });
+        
+        // Function to select the first visible option in a select element
+        function selectFirstVisibleOption(selectId) {
+            var select = document.getElementById(selectId);
+            var options = select.getElementsByTagName("option");
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].style.display !== "none") {
+                    options[i].selected = true;
+                    break;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Uses Predictions</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='output_uses.css') }}">
+<body>
+    <nav id="navbar">
+        <video autoplay loop muted id="bg-video">
+            <source src="{{ url_for('static', filename='vn.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <h1>MediWorld Solutions</h1>
+        <a href="/">Back</a> <!-- Back button -->
+    </nav>
+    <video autoplay loop muted id="vb-video">
+        <source src="{{ url_for('static', filename='vb.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div>
+        {% if predictions %}
+            <ul>
+            {% for prediction in predictions %}
+                <li>
+                    <h1>Medicine Uses</h1>
+                    <p> medicine_name: {{ prediction.medicine_name}}</p>
+                    <img class=img src="{{ url_for('static', filename='p1.jpg') }}" alt="Medicine Image">
+                    <p class=SideEffects >Side Effects: {{ prediction.side_effects }}</p>
+                    <p>Composition: {{ prediction.composition }}</p>
+                    <p>Manufacturer: {{ prediction.Manufacturer }}</p>
+                    <p class=uses>Uses: {{ prediction.Uses }}</p>
+                    <img src="{{ prediction.image_url }}" alt="Medicine Image">
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No predictions found</p>
+        {% endif %}
+    </div>
+</body>
+</html>
